@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Monster Slayer</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="container-fluid">
+        <div class="row fight-panel">
+          <div class="col-3 mx-auto mt-5">
+            <h1 class="text-center">YOU</h1>
+
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped" :class="{'bg-success' : playerHP > 75 && playerHP <= 100,'bg-warning' : playerHP > 25 && playerHP <= 75,'bg-danger' : playerHP <= 25}" role="progressbar" :style="{width: playerHP + '%' }" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{playerHP}}</div>
+            </div>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped bg-primery" role="progressbar" :style="{width: playerMP + '%' }" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{playerMP}}</div>
+            </div>
+            <div class="potions">
+              <span v-for="potion in potions"><img style="height: 20px; width: 20px" src="img/potion.jpg" alt="potion" /></span>
+            </div>
+            <div class="damage-p" v-if="monsterTurn">{{damageP}}</div>
+            <div class="heal-p" v-if="playerHeal">{{healP}}</div>
+            <br /><br /><br /><br /><br /><br />
+            <img v-bind:src="playerImg" alt="player" />
+          </div>
+          <div class="col-3 mx-auto mt-5">
+            <h1 class="text-center">MONSTER</h1>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped" :class="{'bg-success' : monsterHP > 75 && monsterHP <= 100,'bg-warning' : monsterHP > 25 && monsterHP <= 75,'bg-danger' : monsterHP <= 25}" role="progressbar" :style="{width: monsterHP + '%' }" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{monsterHP}}</div>
+            </div>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped bg-primery" role="progressbar" :style="{width: monsterMP + '%' }" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{monsterMP}}</div>
+            </div>
+            <div class="damage-m" v-if="playerTurn">{{damageM}}</div>
+            <br /><br /><br /><br /><br /><br /><br /><br />
+            <img v-bind:src="monsterImg" class="monster-img" alt="monster" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="log">
+              <ul>
+                <li v-for="turn in turns" :class="{'player-turn': turn.isPlayer, 'monster-turn': !turn.isPlayer,'player-heal': turn.isHealing}">{{ turn.text }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-4 controls" v-if="!gameIsRunning">
+            <div class="small-12 columns">
+              <button id="start-game" class="btn btn-outline-success w-100" @click="startGame()">START NEW GAME</button>
+            </div>
+          </div>
+          <div class="col-4 controls" v-else>
+            <div v-if="!turnInProcec">
+              <button id="attack" class="btn btn-outline-warning w-100" @click="attack()">ATTACK</button>
+              <button id="special-attack" v-if="playerMP >= 100" class="btn btn-outline-warning w-100" @click="specialAttack()">SPECIAL ATTACK</button>
+              <button id="heal" v-if="potions.length > 0" class="btn btn-outline-success w-100" @click="heal()">HEAL</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
